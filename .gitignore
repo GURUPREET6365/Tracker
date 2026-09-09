@@ -1,0 +1,9 @@
+.venv
+study_log/lec_log.json
+study_log/revision_script/personalization.json
+study_log/revision_script/revision_log.json
+__pycache__/
+*.py[cod]
+README.md
+TOUPDATE.md
+FirstClone.md
