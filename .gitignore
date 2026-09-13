@@ -1,7 +1,6 @@
 .venv
 __pycache__/
 *.py[cod]
-README.md
 TOUPDATE.md
 FirstClone.md
 RevisionSystem/lec_log.json
