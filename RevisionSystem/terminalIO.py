@@ -52,7 +52,7 @@ class TerminalIO:
                 elif user_ops_num == 5:
                     ShowRevisionChapters().mark_schedule_completed(Lecture_log)
                 elif user_ops_num == 6:
-                    UpdatePersonalization().main()
+                    UpdatePersonalization().main(Lecture_log)
                 elif user_ops_num == 7:
                     print("You are at the create new subject page")
                     Lecture_log.create_new_subject()

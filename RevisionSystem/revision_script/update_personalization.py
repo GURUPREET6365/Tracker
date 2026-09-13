@@ -35,8 +35,8 @@ class UpdatePersonalization:
 
         return all_subjects
 
-    def main(self):
-
+    def main(self, Lecture_log):
+        self.lecture_log=Lecture_log
         all_data=self.get_data_in_personalization()
         print("You can update these things:\n")
         for i in all_data:
@@ -56,8 +56,24 @@ class UpdatePersonalization:
             self.personalization_file_data[name_of_key] = num
 
         elif type_of_value is list:
-            print("List update feature will be soon!")
+            # showing already added subject
+            subject_in_planner=self.personalization_file_data.get("subject_in_planner")
+            print("You have already these subjects in planner.")
+            for index, subject in enumerate(subject_in_planner):
+                print(f"{index+1}. {subject}")
+
+            print("\nYour subjects that can be added......\n")
+            all_subject=self.lecture_log.all_subject()
+            for index, subject_key in enumerate(all_subject):
+                print(f"{all_subject[subject_key]}: {index+1}")
+
+            subject_num=int(input("\nEnter the number of that subject you want to add in personalization:\n"))
+            subject_name=all_subject[subject_num]
+            if subject_name not in subject_in_planner:
+                subject_in_planner.append(subject_name)
+                self.personalization_file_data["subject_in_planner"]= subject_in_planner
 
         self.save()
+        print("Your changes have been updated.")
 
 
