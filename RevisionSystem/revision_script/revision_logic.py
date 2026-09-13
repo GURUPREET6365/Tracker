@@ -83,18 +83,6 @@ class RevisionLogic:
 
 
     def subject_choice_page_for_revision(self, subject_in_personalization):
-        # showing last two days schedule for easy selection.
-        print("Your two days ago history of revision!")
-        revision_log_file=self.open_revision_log_file()
-        today_date=self.today_date
-        for i in range(1, 3):
-            date=today_date-timedelta(days=i)
-            all_data=revision_log_file.get(f"{date}", None)
-            if all_data:
-                subject_name=all_data["data"][-1]["subject_name"]
-                print(f"{i}. {subject_name} | {all_data["is_saved"]}")
-
-
         subject_list=[]
         print('\n\nPlease enter their respective number to choose, you can enter multiple number to select multiple subject.\n e.g-(1, 2)')
         for index, subject in enumerate(subject_in_personalization):
@@ -156,8 +144,6 @@ class RevisionLogic:
                 return False
 
 
-
-
     def revision_logic(self, subject_to_be_in_planner):
         # It must contains that json data whome to be revised
             
@@ -171,9 +157,6 @@ class RevisionLogic:
         # print(planned_subject_chapters)
         
         # return planned_subject_chapters
-
-
-
 
     def revision_brain(self, planned_subject_chapters):
         gap_days_by_user=self.get_revision_interval()

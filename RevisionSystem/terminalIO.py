@@ -18,7 +18,8 @@ class TerminalIO:
             7:"Create new subject",
             8:"Create new chapter",
             9:"Update chapter data",
-            10:"Exit"
+            10:"Self choice subject for revision",
+            11:"Exit"
         }
 
     def user_selected_ops(self):
@@ -66,6 +67,9 @@ class TerminalIO:
                     Lecture_log.chapter_update()
 
                 elif user_ops_num==10:
+                    ShowRevisionChapters().self_choice_subject_for_revision(Lecture_log)
+
+                elif user_ops_num==11:
                     break
 
                 else:

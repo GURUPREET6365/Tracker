@@ -5,9 +5,11 @@ from datetime import date, timedelta
 
 BASE = Path(__file__).resolve().parent
 revision_log_file = BASE / "revision_log.json"
+personalization_file = BASE / "personalization.json"
 
 class ShowRevisionChapters:
     def __init__(self):
+        self.personalization_data=self.open_personalization_file()
         try:
             with open(revision_log_file, 'r') as file:
                 self.revision_log_file=json.load(file)
@@ -18,6 +20,17 @@ class ShowRevisionChapters:
             print(e)
 
         self.date_today = date.today()
+
+    def open_personalization_file(self):
+        try:
+            with open(personalization_file, "r") as file:
+                return json.load(file)
+        except FileNotFoundError:
+            print(f"Error: The file {personalization_file} was not found.")
+            personalization_data = {}
+        except json.JSONDecodeError:
+            print("Error: The file does not contain valid JSON.")
+            personalization_data = {}
 
     def show_schedule(self, print_or_not:bool):
         data=self.revision_log_file.get(f"{self.date_today}", None)
@@ -58,23 +71,57 @@ class ShowRevisionChapters:
                         "date_of_revision":f"{self.date_today}",
                         "date_after_it_can_revised":f"{self.date_today+timedelta(days=gap_days_by_user)}"
                     }
-
                     
                     revision_log.append(custom_data)
                     print(Fore.CYAN + f"{n+1}. {subject_name} | {chapter_name}")
                     n+=1
         print(Style.RESET_ALL)
-        # saving the revision log to revision log file.
+    # saving the revision log to revision log file.
         if revision_log:
             self.save_log_in_file(revision_log)
 
-        else:
-            print("Today you have no schedule.")
+    def self_choice_subject_for_revision(self, Lecture_log):
+        revision_log=[]
+        gap_days_by_user=self.personalization_data.get(
+            "revision_interval_days",
+            5
+        )
+        print("Currently you can only select 1 chapter for revision.")
+        # taking out all subject
+        all_subject=Lecture_log.all_subject()
+        # showing all subjects
+        all_subject=Lecture_log.all_subject()
+        for index, subject_key in enumerate(all_subject):
+            print(f"{all_subject[subject_key]}: {index+1}")
+
+        subject_num=int(input("\nEnter the number to select subject:\n"))
+        subject_name=all_subject[subject_num]
+
+        # taking out all chapters
+        all_chapters=Lecture_log.all_chapter_of_subject(subject_num, all_subject)
+        # showing all subject
+        for index, chapter_key in enumerate(all_chapters):
+            print(f"{all_chapters[chapter_key]}: {index+1}")
+
+        chapter_num=int(input("\nEnter the number to select chapter for revision:\n"))
+        chapter_name=all_chapters[chapter_num]
+        custom_data = {
+            "subject_name":subject_name,
+            "chapter_name":chapter_name,
+            "date_of_revision":f"{self.date_today}",
+            "date_after_it_can_revised":f"{self.date_today+timedelta(days=gap_days_by_user)}"
+        }
+        print("Your schedule is:\n")
+        print(Fore.CYAN + f"{1}. {subject_name} | {chapter_name}")
+        
+        revision_log.append(custom_data)
+        if revision_log:
+            self.save_log_in_file(revision_log)
 
     def mark_schedule_completed(self, Lecture_log):
         print("You want to mark for today or specific date?")
         print("Type:\n1:today's target\n2:specific date target")
-        user_input=int(input())
+        user_input=int(input("Enter the number:\n"))
         if user_input == 1:
             data=self.revision_log_file.get(f"{self.date_today}", None)
             new_data=data['data']
