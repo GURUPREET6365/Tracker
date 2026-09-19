@@ -184,8 +184,8 @@ class ShowRevisionChapters:
                 
                     Lecture_log.save()
                 
-                    self.revision_log_file[f"{self.date_today}"]["is_saved"]=True
-                    self.revision_log_file[f"{self.date_today}"]["is_completed"]=True
+                    self.revision_log_file[f"{date_input}"]["is_saved"]=True
+                    self.revision_log_file[f"{date_input}"]["is_completed"]=True
                     self.save()
                     print("Your today's schedule has been marked as completed.")
                 else:
@@ -214,7 +214,4 @@ class ShowRevisionChapters:
     def main(self, data_of_planner, per_subject_limit_chapter_in_planner, gap_days_by_user):
         self.show_in_terminal(data_of_planner, per_subject_limit_chapter_in_planner, gap_days_by_user)
         # self.show_schedule()
-
-
-
 
